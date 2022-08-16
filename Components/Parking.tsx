@@ -67,7 +67,7 @@ const Parking = ({route}: any) => {
   function handleAdd(random: boolean) {
     setRegistration('');
     if (freeLots.length > 0) {
-      getCount(); //89
+      getCount();
       if (random) {
         getRandomLot();
       }
@@ -102,20 +102,6 @@ const Parking = ({route}: any) => {
       setAmount(10 + (totalTime - 2) * 10);
     }
   }
-
-  //   const timeDiffms = Math.abs(
-  //     lots[currentLot].start.getTime() - new Date().getTime(),
-  //   );
-  //   const timeDiffHrs = Math.floor(timeDiffms / (1000 * 60 * 60));
-  //   setHours(timeDiffHrs);
-
-  //   if (timeDiffHrs <= 2) {
-  //     setAmount(10);
-  //     setHours(timeDiffHrs); //rr
-  //   } else {
-  //     setAmount(10 + (timeDiffHrs - 2) * 10);
-  //   }
-  // }
 
   return (
     <View style={styles.container}>
@@ -293,9 +279,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 55,
     marginVertical: 10,
-
     padding: 5,
-    //
     height: 100,
     width: 110,
   },
