@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Modal,
+  Button,
 } from 'react-native';
 
 import {Snackbar} from 'react-native-paper';
@@ -93,7 +93,7 @@ const Parking = ({route}: any) => {
   };
 
   function calculateCharges() {
-    const end = new Date().getSeconds();
+    const end = new Date().getMinutes();
     const totalTime = (time - end) / (60 * 60);
     if (totalTime / 60 <= 2) {
       setAmount(10);
@@ -105,22 +105,34 @@ const Parking = ({route}: any) => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginHorizontal: 110}}>
-        <Button
-          title="Random Slot"
+      <View style={{marginHorizontal: 40}}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#b0c4de',
+            margin: 10,
+            padding: 5,
+          }}
           onPress={() => {
             handleAdd(true);
-          }}
-          color="#800000"
-        />
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: 'center',
+              color: 'black',
+            }}>
+            Enter Vehicle Number
+          </Text>
+        </TouchableOpacity>
       </View>
+
       {/* Parking Add registration Modal  */}
 
       <Modal visible={showAddModal} animationType="slide">
         <View style={styles.modal}>
           <Text style={styles.modalHeading}>Parking Slot {currentLot}</Text>
           <TextInput
-            placeholder="Enter registration number"
+            placeholder="Enter Vehicle number"
             placeholderTextColor={'grey'}
             onChangeText={text => {
               setRegistration(text);
@@ -132,7 +144,7 @@ const Parking = ({route}: any) => {
             <Button
               disabled={registration.length == 0}
               title="Add"
-              color="#800000"
+              color="#b0c4de"
               onPress={() => {
                 if (registration.length) {
                   setLots(
@@ -153,7 +165,7 @@ const Parking = ({route}: any) => {
             />
             <Button
               title="Cancel"
-              color="#800000"
+              color="#b0c4de"
               onPress={() => {
                 setShowAddModal(false);
               }}
@@ -172,13 +184,13 @@ const Parking = ({route}: any) => {
         animationType="slide">
         <View style={styles.modal}>
           <Text style={styles.modalHeading}>Payment of Slot P{currentLot}</Text>
-          <Text style={styles.modalText}>Total Time : {hours}</Text>
+          <Text style={styles.modalText}>Total Time : {hours} Hrs </Text>
           <Text style={styles.modalText}>Total Amount : {amount}</Text>
 
           <View style={styles.buttonRow}>
             <Button
-              title="Remove"
-              color="#800000"
+              title="Payment Taken"
+              color="#b0c4de"
               onPress={() => {
                 axios
                   .post('https://httpstat.us/200', {
@@ -206,7 +218,7 @@ const Parking = ({route}: any) => {
             />
             <Button
               title="Cancel"
-              color="#800000"
+              color="#b0c4de"
               onPress={() => {
                 setAmount(0);
                 setHours(0);
@@ -216,37 +228,41 @@ const Parking = ({route}: any) => {
           </View>
         </View>
       </Modal>
+
       <Snackbar
         visible={showSnackBar}
         onDismiss={() => setShowSnackBar(false)}
         style={styles.snackBar}>
         <Text style={styles.snackBarText}>The parking is full ! </Text>
       </Snackbar>
-      <TouchableOpacity
-        onPress={() => handleAdd(true)}
-        style={styles.parkingArea}>
-        <FlatList
-          data={lots}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => {
-                setCurrentLot(item.id);
-                item.free ? handleAdd(false) : handleRemove();
-              }}>
-              <View
-                style={{
-                  ...styles.item,
-                  backgroundColor: item.free ? 'green' : 'red',
+
+      <View style={{width: 500, paddingRight: 70}}>
+        <TouchableOpacity style={styles.parkingArea}>
+          <FlatList
+            data={lots}
+            horizontal={false}
+            numColumns={3}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setCurrentLot(item.id);
+                  item.free ? handleAdd(false) : handleRemove();
                 }}>
-                <Text style={styles.itemText}>P{item.id}</Text>
-                <Text style={styles.itemText}>
-                  {item.free ? 'Free' : `Occupied by ${item.reg}`}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </TouchableOpacity>
+                <View
+                  style={{
+                    ...styles.item,
+                    backgroundColor: item.free ? 'green' : 'red',
+                  }}>
+                  <Text style={styles.itemText}>P{item.id}</Text>
+                  <Text style={styles.itemText}>
+                    {item.free ? 'Free' : `Occupied by ${item.reg}`}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -269,19 +285,21 @@ const styles = StyleSheet.create({
   },
 
   parkingArea: {
-    padding: '20%',
+    padding: '0%',
+    margin: 35,
   },
 
   item: {
-    flexDirection: 'column',
+    borderRadius: 10,
+    padding: 3,
+    width: 90,
+    height: 150,
+
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderRadius: 10,
-    marginHorizontal: 55,
-    marginVertical: 10,
-    padding: 5,
-    height: 100,
-    width: 110,
+
+    margin: 5,
+    marginRight: 5,
   },
 
   itemText: {
@@ -322,7 +340,7 @@ const styles = StyleSheet.create({
   },
   snackBar: {
     bottom: 15,
-    backgroundColor: '#b0c4de',
+    backgroundColor: 'red',
     padding: 10,
     fontSize: 40,
   },

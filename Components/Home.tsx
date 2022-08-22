@@ -19,9 +19,9 @@ const Home = ({navigation}: any) => {
         disabled={!lots}
         uppercase={false}
         style={{margin: 100}}
-        color="#800000"
+        color="#b0c4de"
         onPress={() => navigation.navigate('Parking', {lots})}>
-        <Text style={{color: 'white'}}> Submit </Text>
+        <Text style={{color: 'black'}}> Submit </Text>
       </Button>
     </View>
   );
